@@ -9,10 +9,12 @@ interface NoteListContract {
         fun showLoading()
         fun closeLoading()
         fun showNotes(notes: List<NoteContentEntity>)
+        fun refreshNotes(notes: List<NoteContentEntity>)
     }
 
     interface Presenter : Contract.Presenter<View> {
         /** Define all View events **/
+        fun onRefreshNote()
         fun onClickNote(note: NoteContentEntity)
         fun onSubmitSearch(query: String?)
         fun onCloseSearch()

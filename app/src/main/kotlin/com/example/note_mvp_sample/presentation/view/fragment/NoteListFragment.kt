@@ -11,7 +11,7 @@ import com.example.note_mvp_sample.data.entity.NoteContentEntity
 import com.example.note_mvp_sample.presentation.contract.NoteListContract
 import com.example.note_mvp_sample.presentation.presenter.NoteListPresenter
 import com.example.note_mvp_sample.presentation.view.component.NoteAdapter
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_note_list.*
 
 class NoteListFragment : BaseFragment(), NoteListContract.View {
     override val presenter = NoteListPresenter(this)
@@ -27,11 +27,12 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        return inflater.inflate(R.layout.fragment_note_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_container.setOnRefreshListener { presenter.onRefreshNote() }
         setOnSearchListener()
         presenter.onViewCreated()
     }
@@ -75,5 +76,13 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
             it.setHasFixedSize(true)
             it.adapter = adapter
         }
+    }
+
+    override fun refreshNotes(notes: List<NoteContentEntity>) {
+        (note_list_view.adapter as? NoteAdapter)?.let { adapter ->
+            adapter.notes = notes
+            adapter.notifyDataSetChanged()
+        }
+        if (swipe_container.isRefreshing) swipe_container.isRefreshing = false
     }
 }

@@ -13,6 +13,7 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
     override lateinit var job: Job
     private val noteService = NoteService()
     private var notes: List<NoteContentEntity>? = null
+    private var searchingQuery: String? = null
 
     /**----------------------
      * View Events
@@ -27,21 +28,34 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
         }
     }
 
+    override fun onRefreshNote() {
+        launch {
+            notes = noteService.getNotesAsync().await()
+            notes?.let {
+                searchingQuery?.let { query ->
+                    view?.refreshNotes(it.filter { it.name.contains(query, ignoreCase = true) })
+                } ?: view?.refreshNotes(it)
+            } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
+        }
+    }
+
     override fun onClickNote(note: NoteContentEntity) {
         log { "$note" }
     }
 
     override fun onSubmitSearch(query: String?) {
+        searchingQuery = query
         notes?.let {
             query?.let { query ->
-                view?.showNotes(it.filter { it.name.contains(query, ignoreCase = true) })
+                view?.refreshNotes(it.filter { it.name.contains(query, ignoreCase = true) })
             }
         }
     }
 
     override fun onCloseSearch() {
+        searchingQuery = null
         notes?.let {
-            view?.showNotes(it)
+            view?.refreshNotes(it)
         }
     }
 }

@@ -2,4 +2,5 @@
     <string name="app_name">note_mvp_sample</string>
     <string name="note_search_hint">タイトルを入力</string>
     <string name="note_get_error_message">ノート一覧の取得に失敗しました</string>
+    <string name="note_detail_get_error_message">ノートの詳細の取得に失敗しました</string>
 </resources>

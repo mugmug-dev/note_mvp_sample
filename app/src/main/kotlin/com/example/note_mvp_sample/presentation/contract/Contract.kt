@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import com.example.note_mvp_sample.extension.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +26,9 @@ interface Contract {
             get() = Dispatchers.Main + job
 
         /** required view events **/
-        fun onViewCreated() {}
+        fun onViewCreated() {
+            if (job.isCancelled) job = Job()
+        }
 
         /** required lifecycle events **/
         @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

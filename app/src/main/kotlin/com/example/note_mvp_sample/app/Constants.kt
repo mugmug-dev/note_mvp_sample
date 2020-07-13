@@ -9,5 +9,6 @@ class Constants {
 
         /** Note APIs **/
         val NOTE_API_ENDPOINT = "https://note.com/api/v2/notes"
+        val NOTE_DETAIL_BASE_ENDPOINT = "https://note.com/api/v1/notes"
     }
 }

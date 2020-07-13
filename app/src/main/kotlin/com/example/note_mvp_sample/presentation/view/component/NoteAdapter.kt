@@ -20,6 +20,7 @@ class NoteAdapter(var notes: List<NoteContentEntity>, private val presenter: Not
         val title: TextView = view.note_title_view
         val like: TextView = view.note_like_view
         val body: TextView = view.note_body_view
+        val date: TextView = view.note_date_view
     }
 
     override fun getItemCount(): Int {
@@ -37,6 +38,7 @@ class NoteAdapter(var notes: List<NoteContentEntity>, private val presenter: Not
         holder.title.text = notes[position].name
         holder.like.text = "スキ ${notes[position].likeCount}"
         holder.body.text = notes[position].body
+        holder.date.text = notes[position].publishAt
         holder.card.setOnClickListener { presenter.onClickNote(notes[position]) }
     }
 

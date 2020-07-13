@@ -20,11 +20,12 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
     ----------------------**/
 
     override fun onViewCreated() {
+        super.onViewCreated()
         view?.showLoading()
         launch {
             notes = noteService.getNotesAsync().await()
             view?.closeLoading()
-            notes?.let { view?.showNotes(it) } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
+            notes?.let { view?.refreshNotes(it) } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
         }
     }
 
@@ -40,7 +41,12 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
     }
 
     override fun onClickNote(note: NoteContentEntity) {
-        log { "$note" }
+        launch {
+            note.key?.let {
+                val detail = noteService.getNoteDetailAsync(it).await()
+                detail?.let { view?.startNoteDetailFragment(it) } ?: view?.showAlert(App.instance.getString(R.string.note_detail_get_error_message))
+            }
+        }
     }
 
     override fun onSubmitSearch(query: String?) {

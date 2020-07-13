@@ -1,6 +1,7 @@
 package com.example.note_mvp_sample.domain.service
 
 import com.example.note_mvp_sample.data.entity.NoteContentEntity
+import com.example.note_mvp_sample.data.entity.NoteDetailContentEntity
 import com.example.note_mvp_sample.data.repository.NoteRepository
 import com.example.note_mvp_sample.data.source.NoteDataSource
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +13,10 @@ class NoteService {
     private val noteRepository: NoteRepository = NoteDataSource()
 
     fun getNotesAsync(): Deferred<List<NoteContentEntity>?> = CoroutineScope(Dispatchers.IO).async {
-        return@async noteRepository.get()?.data?.contents
+        return@async noteRepository.getNote()?.data?.contents
+    }
+
+    fun getNoteDetailAsync(id: String): Deferred<NoteDetailContentEntity?> = CoroutineScope(Dispatchers.IO).async {
+        return@async noteRepository.getNoteDetail(id)?.data
     }
 }

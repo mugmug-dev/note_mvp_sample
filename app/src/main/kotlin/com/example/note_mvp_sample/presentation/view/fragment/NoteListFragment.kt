@@ -8,10 +8,12 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.note_mvp_sample.R
 import com.example.note_mvp_sample.data.entity.NoteContentEntity
+import com.example.note_mvp_sample.data.entity.NoteDetailContentEntity
 import com.example.note_mvp_sample.presentation.contract.NoteListContract
 import com.example.note_mvp_sample.presentation.presenter.NoteListPresenter
 import com.example.note_mvp_sample.presentation.view.component.NoteAdapter
 import kotlinx.android.synthetic.main.fragment_note_list.*
+import kotlinx.serialization.json.Json
 
 class NoteListFragment : BaseFragment(), NoteListContract.View {
     override val presenter = NoteListPresenter(this)
@@ -34,6 +36,7 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
         super.onViewCreated(view, savedInstanceState)
         swipe_container.setOnRefreshListener { presenter.onRefreshNote() }
         setOnSearchListener()
+        setNotes()
         presenter.onViewCreated()
     }
 
@@ -49,6 +52,16 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
         note_search_view.setOnCloseListener {
             presenter.onCloseSearch()
             return@setOnCloseListener false
+        }
+    }
+
+    private fun setNotes() {
+        val adapter = NoteAdapter(listOf(), presenter)
+        val layoutManager = LinearLayoutManager(context)
+        note_list_view.also {
+            it.layoutManager = layoutManager
+            it.setHasFixedSize(true)
+            it.adapter = adapter
         }
     }
 
@@ -68,21 +81,20 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
         parent?.closeLoading()
     }
 
-    override fun showNotes(notes: List<NoteContentEntity>) {
-        val adapter = NoteAdapter(notes, presenter)
-        val layoutManager = LinearLayoutManager(context)
-        note_list_view.also {
-            it.layoutManager = layoutManager
-            it.setHasFixedSize(true)
-            it.adapter = adapter
-        }
-    }
-
     override fun refreshNotes(notes: List<NoteContentEntity>) {
         (note_list_view.adapter as? NoteAdapter)?.let { adapter ->
             adapter.notes = notes
             adapter.notifyDataSetChanged()
         }
         if (swipe_container.isRefreshing) swipe_container.isRefreshing = false
+    }
+
+    override fun startNoteDetailFragment(detail: NoteDetailContentEntity) {
+        val fragment = NoteDetailFragment().apply {
+            arguments = Bundle().apply {
+                putString(NoteDetailContentEntity::class.java.simpleName, Json.stringify(NoteDetailContentEntity.serializer(), detail))
+            }
+        }
+        parent?.startFragment(fragment)
     }
 }

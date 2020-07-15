@@ -41,5 +41,4 @@ class NoteAdapter(var notes: List<NoteContentEntity>, private val presenter: Not
         holder.date.text = notes[position].publishAt
         holder.card.setOnClickListener { presenter.onClickNote(notes[position]) }
     }
-
 }

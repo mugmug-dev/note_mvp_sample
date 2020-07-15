@@ -20,11 +20,13 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
 
     override fun onViewCreated() {
         super.onViewCreated()
-        view?.showLoading()
-        launch {
-            notes = noteService.getNotesAsync().await()
-            view?.closeLoading()
-            notes?.let { view?.refreshNotes(it) } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
+        if (notes.isNullOrEmpty()) {
+            view?.showLoading()
+            launch {
+                notes = noteService.getNotesAsync().await()
+                view?.closeLoading()
+                notes?.let { view?.refreshNotes(it) } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
+            }
         }
     }
 
@@ -36,6 +38,7 @@ class NoteListPresenter(override val view: NoteListContract.View?) : NoteListCon
                     view?.refreshNotes(it.filter { it.name.contains(query, ignoreCase = true) })
                 } ?: view?.refreshNotes(it)
             } ?: view?.showAlert(App.instance.getString(R.string.note_get_error_message))
+            view?.stopRefreshImmediately()
         }
     }
 

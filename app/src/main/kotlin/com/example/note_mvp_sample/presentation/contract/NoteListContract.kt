@@ -6,10 +6,11 @@ import com.example.note_mvp_sample.data.entity.NoteDetailContentEntity
 interface NoteListContract {
     interface View : Contract.View<Presenter> {
         /** Define all operations **/
-        fun showAlert(message: String)
+        fun showAlert(message: String, positiveButtonLabel: String? = "OK")
         fun showLoading()
         fun closeLoading()
         fun refreshNotes(notes: List<NoteContentEntity>)
+        fun stopRefreshImmediately()
         fun startNoteDetailFragment(detail: NoteDetailContentEntity)
     }
 

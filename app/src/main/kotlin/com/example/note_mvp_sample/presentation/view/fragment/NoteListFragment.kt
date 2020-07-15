@@ -35,7 +35,7 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setNotes()
-        swipe_container.setOnRefreshListener { presenter.onRefreshNote() }
+        note_container.setOnRefreshListener { presenter.onRefreshNote() }
         setOnSearchListener()
         presenter.onViewCreated()
     }
@@ -69,16 +69,16 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
      * UI Methods
     ----------------------**/
 
-    override fun showAlert(message: String) {
-        parent?.showAlert(message)
+    override fun showAlert(message: String, positiveButtonLabel: String?) {
+        super.showAlert(null, message, positiveButtonLabel, null, null, null)
     }
 
     override fun showLoading() {
-        parent?.showLoading()
+        shimmer_container.visibility = View.VISIBLE
     }
 
     override fun closeLoading() {
-        parent?.closeLoading()
+        shimmer_container.visibility = View.GONE
     }
 
     override fun refreshNotes(notes: List<NoteContentEntity>) {
@@ -86,7 +86,11 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
             adapter.notes = notes
             adapter.notifyDataSetChanged()
         }
-        if (swipe_container.isRefreshing) swipe_container.isRefreshing = false
+        if (note_container.isRefreshing) note_container.isRefreshing = false
+    }
+
+    override fun stopRefreshImmediately() {
+        if (note_container.isRefreshing) note_container.isRefreshing = false
     }
 
     override fun startNoteDetailFragment(detail: NoteDetailContentEntity) {

@@ -2,6 +2,7 @@ package com.example.note_mvp_sample.presentation.view.fragment
 
 import android.content.Context
 import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 
 /**
@@ -16,9 +17,6 @@ open class BaseFragment : Fragment(){
          * FragmentからActivityをコールするメソッドを定義
          */
         fun startFragment(fragment: Fragment, isAddToBackStack: Boolean = true)
-        fun showLoading()
-        fun closeLoading()
-        fun showAlert(title: String? = null, message: String? = null, positiveButtonLabel: String? = "OK", negativeButtonLabel: String? = null, positiveListener: DialogInterface.OnClickListener? = null, negativeListener: DialogInterface.OnClickListener? = null)
     }
 
     interface ActivityListener {
@@ -28,12 +26,28 @@ open class BaseFragment : Fragment(){
          */
     }
 
-    lateinit var parent: FragmentListener
+    protected var parent: FragmentListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is FragmentListener) {
             parent = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        parent = null
+    }
+
+    fun showAlert(title: String?, message: String?, positiveButtonLabel: String?, negativeButtonLabel: String?, positiveListener: DialogInterface.OnClickListener?, negativeListener: DialogInterface.OnClickListener?) {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                title?.let { setTitle(it) }
+                message?.let { setMessage(it) }
+                positiveButtonLabel?.let { setPositiveButton(it, positiveListener) }
+                negativeButtonLabel?.let { setNegativeButton(it, negativeListener) }
+            }.show()
         }
     }
 }

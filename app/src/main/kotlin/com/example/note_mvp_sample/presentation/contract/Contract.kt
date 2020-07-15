@@ -1,10 +1,10 @@
 package com.example.note_mvp_sample.presentation.contract
 
+import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import com.example.note_mvp_sample.extension.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,19 +26,22 @@ interface Contract {
             get() = Dispatchers.Main + job
 
         /** required view events **/
+        @CallSuper
         fun onViewCreated() {
             if (job.isCancelled) job = Job()
         }
 
         /** required lifecycle events **/
         @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        fun onCreate() { job = Job() }
+        fun onCreate() {}
+        @CallSuper
         @OnLifecycleEvent(Lifecycle.Event.ON_START)
         fun onStart() { if (job.isCancelled) job = Job() }
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         fun onResume() {}
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         fun onPause() {}
+        @CallSuper
         @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
         fun onStop() { job.cancel() }
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

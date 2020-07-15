@@ -34,15 +34,25 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setNotes()
         swipe_container.setOnRefreshListener { presenter.onRefreshNote() }
         setOnSearchListener()
-        setNotes()
         presenter.onViewCreated()
     }
 
     /**----------------------
      * Methods
     ----------------------**/
+
+    private fun setNotes() {
+        val adapter = NoteAdapter(listOf(), presenter)
+        val layoutManager = LinearLayoutManager(context)
+        note_list_view.also {
+            it.layoutManager = layoutManager
+            it.setHasFixedSize(true)
+            it.adapter = adapter
+        }
+    }
 
     private fun setOnSearchListener() {
         note_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -52,16 +62,6 @@ class NoteListFragment : BaseFragment(), NoteListContract.View {
         note_search_view.setOnCloseListener {
             presenter.onCloseSearch()
             return@setOnCloseListener false
-        }
-    }
-
-    private fun setNotes() {
-        val adapter = NoteAdapter(listOf(), presenter)
-        val layoutManager = LinearLayoutManager(context)
-        note_list_view.also {
-            it.layoutManager = layoutManager
-            it.setHasFixedSize(true)
-            it.adapter = adapter
         }
     }
 

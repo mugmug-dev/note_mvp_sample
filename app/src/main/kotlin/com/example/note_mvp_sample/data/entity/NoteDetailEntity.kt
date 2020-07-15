@@ -19,7 +19,8 @@ data class NoteDetailContentEntity (
     val user: NoteDetailUserEntity? = null,
     val name: String? = null,
     val body: String? = null,
-    val eyecatch: String? = null
+    val eyecatch: String? = null,
+    val publish_at: String? = null
 )
 
 @Serializable

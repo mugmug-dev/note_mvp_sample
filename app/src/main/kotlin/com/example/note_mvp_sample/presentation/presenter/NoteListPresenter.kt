@@ -4,13 +4,12 @@ import com.example.note_mvp_sample.R
 import com.example.note_mvp_sample.app.App
 import com.example.note_mvp_sample.data.entity.NoteContentEntity
 import com.example.note_mvp_sample.domain.service.NoteService
-import com.example.note_mvp_sample.extension.log
 import com.example.note_mvp_sample.presentation.contract.NoteListContract
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class NoteListPresenter(override val view: NoteListContract.View?) : NoteListContract.Presenter {
-    override lateinit var job: Job
+    override var job: Job = Job()
     private val noteService = NoteService()
     private var notes: List<NoteContentEntity>? = null
     private var searchingQuery: String? = null

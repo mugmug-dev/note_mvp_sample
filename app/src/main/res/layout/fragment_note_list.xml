@@ -8,10 +8,10 @@
         <SearchView
             android:id="@+id/note_search_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:iconifiedByDefault="false"
             android:queryHint="@string/note_search_hint"
-            android:layout_marginTop="@dimen/contents_margin"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="@dimen/contents_margin"
             android:layout_marginEnd="@dimen/contents_margin"
             app:layout_constraintTop_toTopOf="parent"
@@ -19,14 +19,12 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipe_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/contents_margin"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="@dimen/contents_margin"
             android:layout_marginEnd="@dimen/contents_margin"
-            android:layout_marginBottom="@dimen/contents_margin"
             app:layout_constraintTop_toBottomOf="@id/note_search_view"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

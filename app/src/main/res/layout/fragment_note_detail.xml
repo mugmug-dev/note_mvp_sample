@@ -1,9 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/contents_margin"
+                android:layout_marginStart="@dimen/contents_margin"
+                android:layout_marginEnd="@dimen/contents_margin"
+                android:gravity="start"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/contents_margin"
+                android:layout_marginStart="@dimen/contents_margin"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toBottomOf="@id/detail_title"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical|start"
+                app:layout_constraintTop_toTopOf="@+id/user_image"
+                app:layout_constraintStart_toEndOf="@+id/user_image" />
+
+            <TextView
+                android:id="@+id/detail_date"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical|start"
+                app:layout_constraintTop_toBottomOf="@id/user_name"
+                app:layout_constraintStart_toEndOf="@+id/user_image" />
+
+            <TextView
+                android:id="@+id/detail_like"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/contents_margin"
+                android:gravity="center_vertical|end"
+                android:maxLines="1"
+                android:text="スキ 0"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/detail_date"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_date"/>
+
+            <WebView
+                android:id="@+id/detail_body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/contents_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -5,7 +5,7 @@ import com.example.note_mvp_sample.presentation.contract.NoteDetailContract
 import kotlinx.coroutines.Job
 
 class NoteDetailPresenter(override val view: NoteDetailContract.View?) : NoteDetailContract.Presenter {
-    override lateinit var job: Job
+    override var job: Job = Job()
     private var noteDetail: NoteDetailContentEntity? = null
 
     /**----------------------
@@ -13,7 +13,7 @@ class NoteDetailPresenter(override val view: NoteDetailContract.View?) : NoteDet
     ----------------------**/
 
     override fun onViewCreated(detail: NoteDetailContentEntity?) {
-        super.onViewCreated()
+        super.onViewCreated(detail)
         noteDetail = detail
         noteDetail?.let { view?.showDetail(it) }
     }
